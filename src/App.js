@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from './Header.js';
+import Todos from './Todos.js';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// eslint-disable-next-line
+import { AxiosProvider, Request, Get, Delete, Head, Post, Put, Patch, withAxios } from 'react-axios'
+import React from 'react';
+
+export default class FetchTask extends React.Component {
+  
+  state = {
+    loading: true,
+    task: [],
+  };
+  
+  async componentDidMount() {
+    const url = "https://jsonplaceholder.typicode.com/todos";
+    const response = await fetch(url);
+    const data = await response.json();
+    this.setState({task: data, loading: false})
+    //this.setState({task: data[0], loading: false})
+  }
+  
+  render() {
+
+    if(this.state.loading) {
+      return <div>loading...</div>;
+    }
+
+    if (!this.state.task) {
+      return <div>didn't get a task</div>;
+    }
+
+    return (
+      <div>
+        <Header />
+        <Todos />
+      </div>
+    );
+  }
 }
 
-export default App;
+// ignores google extensions
+<script>
+window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {}
+</script>
+

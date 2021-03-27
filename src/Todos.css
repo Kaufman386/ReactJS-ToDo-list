@@ -1,0 +1,6 @@
+li {
+    list-style-type: none;
+    background: #f4f4f4;
+    border-bottom: 1px #ccc dotted;
+    padding: 10px;
+}
