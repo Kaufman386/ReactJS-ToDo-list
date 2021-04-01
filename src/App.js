@@ -1,41 +1,28 @@
 import Header from './Header.js';
 import Todos from './Todos.js';
-
-// eslint-disable-next-line
-import { AxiosProvider, Request, Get, Delete, Head, Post, Put, Patch, withAxios } from 'react-axios'
+import axios from 'axios';
 import React from 'react';
 
-export default class FetchTask extends React.Component {
-  
+export default class toDoList extends React.Component {
   state = {
-    loading: true,
-    task: [],
-  };
-  
-  async componentDidMount() {
-    const url = "https://jsonplaceholder.typicode.com/todos";
-    const response = await fetch(url);
-    const data = await response.json();
-    this.setState({task: data, loading: false})
-    //this.setState({task: data[0], loading: false})
+    tasks: []
   }
-  
+
+  componentDidMount() {
+    axios.get(`https://jsonplaceholder.typicode.com/todos`)
+      .then(res => {
+        const tasks = res.data;
+        this.setState({ tasks });
+      })
+  }
+
   render() {
-
-    if(this.state.loading) {
-      return <div>loading...</div>;
-    }
-
-    if (!this.state.task) {
-      return <div>didn't get a task</div>;
-    }
-
     return (
       <div>
         <Header />
-        <Todos />
+        <Todos toDos={this.state.tasks.slice(0,31)}/>
       </div>
-    );
+    )
   }
 }
 
@@ -43,4 +30,3 @@ export default class FetchTask extends React.Component {
 <script>
 window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {}
 </script>
-
